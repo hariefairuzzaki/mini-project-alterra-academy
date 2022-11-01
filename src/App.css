@@ -1,0 +1,51 @@
+:root {
+  --swiper-theme-color: #000000 !important;
+}
+
+section {
+  margin-top: 70px;
+}
+
+.swiper-slide {
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.position {
+  position: relative;
+  bottom: 70px;
+  left: 40px;
+}
+
+#clothingfilter a,
+#shoesfilter a,
+#menfilter a,
+#womenfilter a,
+#kidsfilter a,
+#products a,
+#clothing a,
+#shoes a {
+  text-decoration: none;
+  color: #000000;
+}
+
+#category .link-dark:hover {
+  text-decoration: underline !important;
+}
+
+#category .nav-link {
+  padding: 0 !important;
+  color: #000000 !important;
+}
+
+.form-check-input:checked {
+  background-color: #000000 !important;
+  border-color: #000000 !important;
+}
