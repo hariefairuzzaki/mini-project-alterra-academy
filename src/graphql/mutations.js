@@ -135,3 +135,64 @@ export const RemoveFromFavourite = gql`
     }
   }
 `;
+
+export const Checkout = gql`
+  mutation Checkout(
+    $first_name: String
+    $last_name: String
+    $phone_number: bigint
+    $total_price: Int
+    $address: String
+    $detail_address: String
+    $checkout_id: Int
+    $product_id: Int
+    $quantity: Int
+  ) {
+    insert_orders(
+      objects: {
+        first_name: $first_name
+        last_name: $last_name
+        phone_number: $phone_number
+        total_price: $total_price
+        address: $address
+        detail_address: $detail_address
+        checkout: {
+          data: { id: $checkout_id, product_id: $product_id, quantity: $quantity }
+          on_conflict: { constraint: cart_pkey, update_columns: id }
+        }
+      }
+    ) {
+      returning {
+        id
+        cart_id
+        first_name
+        last_name
+        phone_number
+        address
+        detail_address
+        total_price
+        created_at
+        checkout {
+          id
+          product_id
+          quantity
+          addToCart {
+            id
+            name
+            title
+            price
+            size
+            quantity
+            type
+            gender
+            image1
+            image2
+            image3
+            image4
+            description
+          }
+        }
+      }
+    }
+  }
+`;

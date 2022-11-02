@@ -3,10 +3,10 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import ButtonSizeClothing from "./ButtonSizeClothing";
 import ButtonSizeShoes from "./ButtonSizeShoes";
-import useAddToCart from "../../hooks/useAddToCart";
-import useAddToFavourite from "../../hooks/useAddToFavourite";
 import useGetProductById from "../../hooks/useGetProductById";
 import { formatRupiah } from "../../lib/formatRupiah";
+import useAddToCart from "../../hooks/hooksCart/useAddToCart";
+import useAddToFavourite from "../../hooks/hooksFavourites/useAddToFavourite";
 
 export default function Detail() {
   const { dataProductById, loadingProductById, errorProductById } = useGetProductById();

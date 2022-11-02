@@ -207,3 +207,39 @@ export const FavouriteItem = gql`
     }
   }
 `;
+
+export const Orders = gql`
+  query Orders {
+    orders {
+      id
+      first_name
+      last_name
+      phone_number
+      address
+      detail_address
+      total_price
+      created_at
+      cart_id
+      checkout {
+        id
+        product_id
+        quantity
+        addToCart {
+          id
+          name
+          title
+          price
+          size
+          quantity
+          type
+          gender
+          image1
+          image2
+          image3
+          image4
+          description
+        }
+      }
+    }
+  }
+`;

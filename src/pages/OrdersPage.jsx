@@ -2,14 +2,14 @@ import React from "react";
 import Footer from "../components/Footer";
 import Navibar from "../components/Navibar";
 import Navs from "../components/Profile/Navs";
-import Profile from "../components/Profile/Profile";
+import Orders from "../components/Profile/Orders";
 
-export default function ProfilePage() {
+export default function OrdersPage() {
   return (
     <>
       <Navibar />
       <Navs />
-      <Profile />
+      <Orders />
       <Footer />
     </>
   );

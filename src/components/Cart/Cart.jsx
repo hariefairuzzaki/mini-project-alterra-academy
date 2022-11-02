@@ -3,19 +3,30 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { AiOutlineDelete } from "react-icons/ai";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { formatRupiah } from "../../lib/formatRupiah";
-import useAddToFavourite from "../../hooks/useAddToFavourite";
-import useCartItem from "../../hooks/useCartItem";
-import useRemoveFromCart from "../../hooks/useRemoveFromCart";
+import useAddToFavourite from "../../hooks/hooksFavourites/useAddToFavourite";
+import useCartItem from "../../hooks/hooksCart/useCartItem";
+import useRemoveFromCart from "../../hooks/hooksCart/useRemoveFromCart";
+import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
-  const { dataCartItem } = useCartItem();
+  const { dataCartItem, loadingCartItem, errorCartItem } = useCartItem();
   const { addToFavourite } = useAddToFavourite();
   const { removeFromCart } = useRemoveFromCart();
+
+  // calculate total price
   const prices = [];
 
   dataCartItem?.cart?.map((item) => prices.push(item.addToCart.price));
 
-  const total = prices?.reduce((prevValue, currValue) => prevValue + currValue, 0);
+  const total = prices?.reduce((prevPrice, currPrice) => prevPrice + currPrice, 0);
+
+  // checkout
+  const navigate = useNavigate();
+
+  const handleCheckout = (e) => {
+    e.preventDefault();
+    navigate("/checkout", { state: { dataCartItem, loadingCartItem, errorCartItem, total } });
+  };
 
   return (
     <section>
@@ -23,89 +34,94 @@ export default function Cart() {
         <Row className="gx-5 gy-5">
           <Col lg={8}>
             <h3 className="mb-4">Bag</h3>
-            {dataCartItem?.cart?.map((item) => (
-              <Row key={item.id} className="mb-4">
-                <Col lg={3}>
-                  <img src={item.addToCart.image1} alt="Air Force" className="img-fluid" />
-                </Col>
-                <Col lg={9}>
-                  <Row>
-                    <Col>
-                      <p className="m-0">{item.addToCart.name}</p>
-                      <p className="m-0 text-black-50">{item.addToCart.title}</p>
-                      <div className="d-flex  mt-2">
-                        <div className="me-3">
-                          <Form.Group className="mb-3 d-flex">
-                            <Form.Label htmlFor="size" className="me-2 text-black-50">
-                              Size
-                            </Form.Label>
-                            <Form.Select id="size">
-                              <option>40</option>
-                              <option>41</option>
-                              <option>42</option>
-                              <option>43</option>
-                              <option>45</option>
-                            </Form.Select>
-                          </Form.Group>
+            {errorCartItem && <p>Something went wrong ...</p>}
+            {loadingCartItem ? (
+              <p>Loading ...</p>
+            ) : (
+              dataCartItem?.cart?.map((item) => (
+                <Row key={item.id} className="mb-4">
+                  <Col lg={3}>
+                    <img src={item.addToCart.image1} alt="Air Force" className="img-fluid" />
+                  </Col>
+                  <Col lg={9}>
+                    <Row>
+                      <Col>
+                        <p className="m-0">{item.addToCart.name}</p>
+                        <p className="m-0 text-black-50">{item.addToCart.title}</p>
+                        <div className="d-flex  mt-2">
+                          <div className="me-3">
+                            <Form.Group className="mb-3 d-flex">
+                              <Form.Label htmlFor="size" className="me-2 text-black-50">
+                                Size
+                              </Form.Label>
+                              <Form.Select id="size">
+                                <option>40</option>
+                                <option>41</option>
+                                <option>42</option>
+                                <option>43</option>
+                                <option>45</option>
+                              </Form.Select>
+                            </Form.Group>
+                          </div>
+                          <div>
+                            <Form.Group className="mb-3 d-flex">
+                              <Form.Label htmlFor="quantity" className="me-2 text-black-50">
+                                Quantity
+                              </Form.Label>
+                              <Form.Select id="quantity">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                              </Form.Select>
+                            </Form.Group>
+                          </div>
                         </div>
                         <div>
-                          <Form.Group className="mb-3 d-flex">
-                            <Form.Label htmlFor="quantity" className="me-2 text-black-50">
-                              Quantity
-                            </Form.Label>
-                            <Form.Select id="quantity">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                            </Form.Select>
-                          </Form.Group>
-                        </div>
-                      </div>
-                      <div>
-                        <AiOutlineHeart
-                          size="25px"
-                          style={{ cursor: "pointer" }}
-                          className="me-3"
-                          onClick={() => {
-                            addToFavourite({
-                              variables: {
-                                id: item.addToCart.id,
-                                name: item.addToCart.name,
-                                title: item.addToCart.title,
-                                price: item.addToCart.price,
-                                size: item.addToCart.size,
-                                quantity: item.addToCart.quantity,
-                                type: item.addToCart.type,
-                                gender: item.addToCart.gender,
-                                image1: item.addToCart.image1,
-                                image2: item.addToCart.image2,
-                                image3: item.addToCart.image3,
-                                image4: item.addToCart.image4,
-                                description: item.addToCart.description,
-                              },
-                            });
-                          }}
-                        />
+                          <AiOutlineHeart
+                            size="25px"
+                            style={{ cursor: "pointer" }}
+                            className="me-3"
+                            onClick={() => {
+                              addToFavourite({
+                                variables: {
+                                  id: item.addToCart.id,
+                                  name: item.addToCart.name,
+                                  title: item.addToCart.title,
+                                  price: item.addToCart.price,
+                                  size: item.addToCart.size,
+                                  quantity: item.addToCart.quantity,
+                                  type: item.addToCart.type,
+                                  gender: item.addToCart.gender,
+                                  image1: item.addToCart.image1,
+                                  image2: item.addToCart.image2,
+                                  image3: item.addToCart.image3,
+                                  image4: item.addToCart.image4,
+                                  description: item.addToCart.description,
+                                },
+                              });
+                            }}
+                          />
 
-                        <AiOutlineDelete
-                          size="25px"
-                          style={{ cursor: "pointer" }}
-                          onClick={() => {
-                            removeFromCart({
-                              variables: { id: item.id },
-                            });
-                          }}
-                        />
-                      </div>
-                    </Col>
-                    <Col>
-                      <p className="text-end">{formatRupiah(item.addToCart.price)}</p>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-            ))}
+                          <AiOutlineDelete
+                            size="25px"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              removeFromCart({
+                                variables: { id: item.id },
+                              });
+                            }}
+                          />
+                        </div>
+                      </Col>
+                      <Col>
+                        <p className="text-end">{formatRupiah(item.addToCart.price)}</p>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              ))
+            )}
           </Col>
 
           <Col lg={4}>
@@ -148,7 +164,7 @@ export default function Cart() {
               <hr />
             </Row>
 
-            <Button variant="dark" className="w-100">
+            <Button variant="dark" className="w-100" onClick={handleCheckout}>
               Checkout
             </Button>
           </Col>

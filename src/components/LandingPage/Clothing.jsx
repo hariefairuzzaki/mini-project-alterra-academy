@@ -77,7 +77,7 @@ export default function Clothing() {
           ) : (
             dataProductByClothing?.product?.map((item) => (
               <SwiperSlide key={item.id}>
-                <Card className="border-0" style={{ width: "25rem" }}>
+                <Card className="border-0">
                   <Link to={`detail/${item.id}`}>
                     <Card.Img variant="top" src={item.image1} />
                     <Card.Body className="p-0 mt-3">
