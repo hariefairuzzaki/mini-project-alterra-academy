@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
+import { Button, Card, Col, Container, Form, Modal, Row } from "react-bootstrap";
+import { Link, useLocation } from "react-router-dom";
 import useCheckout from "../../hooks/hooksOrders/useCheckout";
 import { formatRupiah } from "../../lib/formatRupiah";
 
@@ -17,6 +17,10 @@ export default function Checkout() {
   const { state } = useLocation();
   const { checkout } = useCheckout();
   const [data, setData] = useState(baseData);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const handleInput = (e) => {
     e.preventDefault();
@@ -29,18 +33,31 @@ export default function Checkout() {
   };
 
   const handleCheckout = () =>
-    state.dataCartItem.cart.map((item) =>
+    state.dataCartItem?.cart?.map((item) =>
       checkout({
         variables: {
           first_name: data.first_name,
           last_name: data.last_name,
           phone_number: data.phone_number,
-          total_price: state.total,
           address: data.address,
           detail_address: data.detail_address,
-          checkout_id: item.id,
-          product_id: item.product_id,
-          quantity: item.quantity,
+          total_price: state.total,
+
+          id: item.addToCart.id,
+          name: item.addToCart.name,
+          title: item.addToCart.title,
+          price: item.addToCart.price,
+          size: item.addToCart.size,
+          quantity: item.addToCart.quantity,
+          type: item.addToCart.type,
+          gender: item.addToCart.gender,
+          image1: item.addToCart.image1,
+          image2: item.addToCart.image2,
+          image3: item.addToCart.image3,
+          image4: item.addToCart.image4,
+          description: item.addToCart.description,
+
+          id_cart: item.id,
         },
       })
     );
@@ -122,17 +139,27 @@ export default function Checkout() {
               </Card.Body>
             </Card>
 
-            <Form className="w-75 mt-4">
-              <h5>Upload evidence of transfer</h5>
-              <Form.Group controlId="floatingInput" className="mb-3">
-                <Form.Control type="file" />
-                <Form.Text className="text-muted">*checking within 1 x 24 hours</Form.Text>
-              </Form.Group>
-            </Form>
-
-            <Button type="submit" variant="dark" onClick={handleCheckout}>
+            <Button
+              type="submit"
+              variant="dark"
+              onClick={() => {
+                handleCheckout();
+                handleShow();
+              }}
+            >
               Submit
             </Button>
+            <Modal show={show} onHide={handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>Nike</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>Thanks for order!</Modal.Body>
+              <Modal.Footer>
+                <Button as={Link} to="/profile/order" variant="dark" onClick={handleClose}>
+                  Go to see your order
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </Col>
 
           <Col lg={4}>
@@ -176,7 +203,7 @@ export default function Checkout() {
             {state.loadingCartItem ? (
               <p>Loading ...</p>
             ) : (
-              state.dataCartItem.cart.map((item) => (
+              state.dataCartItem?.cart?.map((item) => (
                 <Row className="mb-4" key={item.id}>
                   <Col>
                     <img src={item.addToCart.image1} alt="Nike" className="img-fluid" />

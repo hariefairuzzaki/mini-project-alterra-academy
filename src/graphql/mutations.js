@@ -141,57 +141,83 @@ export const Checkout = gql`
     $first_name: String
     $last_name: String
     $phone_number: bigint
-    $total_price: Int
     $address: String
     $detail_address: String
-    $checkout_id: Int
-    $product_id: Int
+    $total_price: bigint
+    $id: Int
+    $name: String
+    $title: String
+    $price: Int
+    $size: String
     $quantity: Int
+    $type: String
+    $gender: String
+    $image1: String
+    $image2: String
+    $image3: String
+    $image4: String
+    $description: String
+    $id_cart: Int!
   ) {
     insert_orders(
       objects: {
         first_name: $first_name
         last_name: $last_name
         phone_number: $phone_number
-        total_price: $total_price
         address: $address
         detail_address: $detail_address
-        checkout: {
-          data: { id: $checkout_id, product_id: $product_id, quantity: $quantity }
-          on_conflict: { constraint: cart_pkey, update_columns: id }
+        total_price: $total_price
+        order: {
+          data: {
+            id: $id
+            name: $name
+            title: $title
+            price: $price
+            size: $size
+            quantity: $quantity
+            type: $type
+            gender: $gender
+            image1: $image1
+            image2: $image2
+            image3: $image3
+            image4: $image4
+            description: $description
+          }
+          on_conflict: { constraint: product_pkey, update_columns: id }
         }
       }
     ) {
+      affected_rows
       returning {
         id
-        cart_id
         first_name
         last_name
         phone_number
         address
         detail_address
+        product_id
         total_price
-        created_at
-        checkout {
+        order {
           id
-          product_id
+          name
+          title
+          price
+          size
           quantity
-          addToCart {
-            id
-            name
-            title
-            price
-            size
-            quantity
-            type
-            gender
-            image1
-            image2
-            image3
-            image4
-            description
-          }
+          type
+          gender
+          image1
+          image2
+          image3
+          image4
+          description
         }
+      }
+    }
+    delete_cart(where: { id: { _eq: $id_cart } }) {
+      affected_rows
+      returning {
+        id
       }
     }
   }

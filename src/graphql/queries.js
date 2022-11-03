@@ -217,28 +217,22 @@ export const Orders = gql`
       phone_number
       address
       detail_address
+      product_id
       total_price
-      created_at
-      cart_id
-      checkout {
+      order {
         id
-        product_id
+        name
+        title
+        price
+        size
         quantity
-        addToCart {
-          id
-          name
-          title
-          price
-          size
-          quantity
-          type
-          gender
-          image1
-          image2
-          image3
-          image4
-          description
-        }
+        type
+        gender
+        image1
+        image2
+        image3
+        image4
+        description
       }
     }
   }

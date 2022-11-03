@@ -1,13 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import useAddToCart from "../../hooks/hooksCart/useAddToCart";
 import useFavouriteItem from "../../hooks/hooksFavourites/useFavouriteItem";
 import useRemoveFromFavourite from "../../hooks/hooksFavourites/useRemoveFromFavourite";
 import { formatRupiah } from "../../lib/formatRupiah";
+import ToastAddToCart from "../Toast/ToastAddToCart";
+import ToastRemoveProduct from "../Toast/ToastRemoveProduct";
 export default function Favourite() {
   const { addToCart } = useAddToCart();
   const { dataFavouriteItem, loadingFavouriteItem, errorFavouriteItem } = useFavouriteItem();
   const { removeFromFavourite } = useRemoveFromFavourite();
+  const [showAddCart, setShowAddCart] = useState(false);
+  const [showRemoveProduct, setRemoveProduct] = useState(false);
+
+  // handle add to cart
+  const handleAddToCart = () => {
+    dataFavouriteItem?.favourites?.map(
+      (item) =>
+        addToCart({
+          variables: {
+            id: item.addToFavourite.id,
+            name: item.addToFavourite.name,
+            title: item.addToFavourite.title,
+            price: item.addToFavourite.price,
+            size: item.addToFavourite.size,
+            quantity: item.addToFavourite.quantity,
+            type: item.addToFavourite.type,
+            gender: item.addToFavourite.gender,
+            image1: item.addToFavourite.image1,
+            image2: item.addToFavourite.image2,
+            image3: item.addToFavourite.image3,
+            image4: item.addToFavourite.image4,
+            description: item.addToFavourite.description,
+          },
+        }),
+      setShowAddCart(true)
+    );
+  };
 
   return (
     <section>
@@ -42,6 +71,7 @@ export default function Favourite() {
                         removeFromFavourite({
                           variables: { id: item.id },
                         });
+                        setRemoveProduct(true);
                       }}
                     >
                       Remove
@@ -50,23 +80,7 @@ export default function Favourite() {
                       variant="dark"
                       className="mt-3 w-100"
                       onClick={() => {
-                        addToCart({
-                          variables: {
-                            id: item.addToFavourite.id,
-                            name: item.addToFavourite.name,
-                            title: item.addToFavourite.title,
-                            price: item.addToFavourite.price,
-                            size: item.addToFavourite.size,
-                            quantity: item.addToFavourite.quantity,
-                            type: item.addToFavourite.type,
-                            gender: item.addToFavourite.gender,
-                            image1: item.addToFavourite.image1,
-                            image2: item.addToFavourite.image2,
-                            image3: item.addToFavourite.image3,
-                            image4: item.addToFavourite.image4,
-                            description: item.addToFavourite.description,
-                          },
-                        });
+                        handleAddToCart();
                       }}
                     >
                       Add to bag
@@ -78,6 +92,8 @@ export default function Favourite() {
           )}
         </Row>
       </Container>
+      <ToastAddToCart showAddCart={showAddCart} setShowAddCart={setShowAddCart} />
+      <ToastRemoveProduct showRemoveProduct={showRemoveProduct} setRemoveProduct={setRemoveProduct} />
     </section>
   );
 }

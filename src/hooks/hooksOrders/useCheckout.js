@@ -1,10 +1,10 @@
 import { useMutation } from "@apollo/client";
 import { Checkout } from "../../graphql/mutations";
-import { Orders } from "../../graphql/queries";
+import { CartItem, Orders } from "../../graphql/queries";
 
 export default function useCheckout() {
   const [checkout, { loading: loadingCheckout }] = useMutation(Checkout, {
-    refetchQueries: [Orders],
+    refetchQueries: [Orders, CartItem],
   });
   return {
     checkout,

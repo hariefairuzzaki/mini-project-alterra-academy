@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { AiOutlineDelete } from "react-icons/ai";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
@@ -7,11 +7,19 @@ import useAddToFavourite from "../../hooks/hooksFavourites/useAddToFavourite";
 import useCartItem from "../../hooks/hooksCart/useCartItem";
 import useRemoveFromCart from "../../hooks/hooksCart/useRemoveFromCart";
 import { useNavigate } from "react-router-dom";
+import ToastRemoveProduct from "../Toast/ToastRemoveProduct";
+import ToastAddToFav from "../Toast/ToastAddToFav";
+import useFavouriteItem from "../../hooks/hooksFavourites/useFavouriteItem";
+import ToastAlreadyExist from "../Toast/ToastAlreadyExist";
 
 export default function Cart() {
   const { dataCartItem, loadingCartItem, errorCartItem } = useCartItem();
   const { addToFavourite } = useAddToFavourite();
   const { removeFromCart } = useRemoveFromCart();
+  const { dataFavouriteItem } = useFavouriteItem();
+  const [showAddFav, setShowAddFav] = useState(false);
+  const [showRemoveProduct, setRemoveProduct] = useState(false);
+  const [showAlreadyExist, setAlreadyExist] = useState(false);
 
   // calculate total price
   const prices = [];
@@ -26,6 +34,37 @@ export default function Cart() {
   const handleCheckout = (e) => {
     e.preventDefault();
     navigate("/checkout", { state: { dataCartItem, loadingCartItem, errorCartItem, total } });
+  };
+
+  // if product already in favourite
+  const favouriteItems = dataFavouriteItem?.favourites?.map((item) => item.product_id);
+  const productItems = dataCartItem?.cart?.map((item) => item.addToCart.id) || [];
+
+  const IsInCart = favouriteItems?.some((item) => item === productItems[0]);
+
+  // add to favourite
+  const handleAddToFav = () => {
+    dataCartItem?.cart?.map(
+      (item) =>
+        addToFavourite({
+          variables: {
+            id: item.addToCart.id,
+            name: item.addToCart.name,
+            title: item.addToCart.title,
+            price: item.addToCart.price,
+            size: item.addToCart.size,
+            quantity: item.addToCart.quantity,
+            type: item.addToCart.type,
+            gender: item.addToCart.gender,
+            image1: item.addToCart.image1,
+            image2: item.addToCart.image2,
+            image3: item.addToCart.image3,
+            image4: item.addToCart.image4,
+            description: item.addToCart.description,
+          },
+        }),
+      setShowAddFav(true)
+    );
   };
 
   return (
@@ -83,23 +122,7 @@ export default function Cart() {
                             style={{ cursor: "pointer" }}
                             className="me-3"
                             onClick={() => {
-                              addToFavourite({
-                                variables: {
-                                  id: item.addToCart.id,
-                                  name: item.addToCart.name,
-                                  title: item.addToCart.title,
-                                  price: item.addToCart.price,
-                                  size: item.addToCart.size,
-                                  quantity: item.addToCart.quantity,
-                                  type: item.addToCart.type,
-                                  gender: item.addToCart.gender,
-                                  image1: item.addToCart.image1,
-                                  image2: item.addToCart.image2,
-                                  image3: item.addToCart.image3,
-                                  image4: item.addToCart.image4,
-                                  description: item.addToCart.description,
-                                },
-                              });
+                              IsInCart ? setAlreadyExist(true) : handleAddToFav();
                             }}
                           />
 
@@ -110,6 +133,7 @@ export default function Cart() {
                               removeFromCart({
                                 variables: { id: item.id },
                               });
+                              setRemoveProduct(true);
                             }}
                           />
                         </div>
@@ -170,6 +194,9 @@ export default function Cart() {
           </Col>
         </Row>
       </Container>
+      <ToastRemoveProduct showRemoveProduct={showRemoveProduct} setRemoveProduct={setRemoveProduct} />
+      <ToastAddToFav showAddFav={showAddFav} setShowAddFav={setShowAddFav} />
+      <ToastAlreadyExist showAlreadyExist={showAlreadyExist} setAlreadyExist={setAlreadyExist} />
     </section>
   );
 }
