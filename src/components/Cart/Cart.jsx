@@ -21,6 +21,9 @@ export default function Cart() {
   const [showRemoveProduct, setRemoveProduct] = useState(false);
   const [showAlreadyExist, setAlreadyExist] = useState(false);
 
+  // conditional disable button
+  const disabled = dataCartItem?.cart?.length === 0;
+
   // calculate total price
   const prices = [];
 
@@ -72,58 +75,60 @@ export default function Cart() {
           <Col lg={8}>
             <h3 className="mb-4">Bag</h3>
             {errorCartItem && <p>Something went wrong ...</p>}
-            {loadingCartItem ? (
+            {loadingCartItem && (
               <div className="text-center">
                 <Spinner animation="border" />
               </div>
-            ) : (
-              dataCartItem?.cart?.map((item) => (
-                <Row key={item.id} className="mb-4">
-                  <Col lg={3}>
-                    <img src={item.addToCart.image1} alt="Air Force" className="img-fluid" />
-                  </Col>
-                  <Col lg={9}>
-                    <Row>
-                      <Col>
-                        <p className="m-0">{item.addToCart.name}</p>
-                        <p className="m-0 text-black-50">{item.addToCart.title}</p>
-                        <div className="d-flex gap-3">
-                          <p className="text-black-50">Size {item.size}</p>
-                          <p className="text-black-50 mx-2">QTY {item.quantity}</p>
-                        </div>
-                        <div>
-                          <Button
-                            variant="light"
-                            className="btn-icon rounded-circle me-3"
-                            onClick={() => {
-                              isInFav ? setAlreadyExist(true) : handleAddToFav();
-                            }}
-                          >
-                            <AiOutlineHeart size="25px" />
-                          </Button>
-
-                          <Button
-                            variant="light"
-                            className="btn-icon rounded-circle"
-                            onClick={() => {
-                              removeFromCart({
-                                variables: { id: item.id },
-                              });
-                              setRemoveProduct(true);
-                            }}
-                          >
-                            <AiOutlineDelete size="25px" />
-                          </Button>
-                        </div>
-                      </Col>
-                      <Col>
-                        <p className="text-end">{formatRupiah(item.addToCart.price)}</p>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              ))
             )}
+            {dataCartItem?.cart.length === 0 && (
+              <h3 className="text-center pt-5">Items added to your cart will be saved here.</h3>
+            )}
+            {dataCartItem?.cart?.map((item) => (
+              <Row key={item.id} className="mb-4">
+                <Col lg={3}>
+                  <img src={item.addToCart.image1} alt="Air Force" className="img-fluid" />
+                </Col>
+                <Col lg={9}>
+                  <Row>
+                    <Col>
+                      <p className="m-0">{item.addToCart.name}</p>
+                      <p className="m-0 text-black-50">{item.addToCart.title}</p>
+                      <div className="d-flex gap-3">
+                        <p className="text-black-50">Size {item.size}</p>
+                        <p className="text-black-50 mx-2">QTY {item.quantity}</p>
+                      </div>
+                      <div>
+                        <Button
+                          variant="light"
+                          className="btn-icon rounded-circle me-3"
+                          onClick={() => {
+                            isInFav ? setAlreadyExist(true) : handleAddToFav();
+                          }}
+                        >
+                          <AiOutlineHeart size="25px" />
+                        </Button>
+
+                        <Button
+                          variant="light"
+                          className="btn-icon rounded-circle"
+                          onClick={() => {
+                            removeFromCart({
+                              variables: { id: item.id },
+                            });
+                            setRemoveProduct(true);
+                          }}
+                        >
+                          <AiOutlineDelete size="25px" />
+                        </Button>
+                      </div>
+                    </Col>
+                    <Col>
+                      <p className="text-end">{formatRupiah(item.addToCart.price)}</p>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            ))}
           </Col>
 
           <Col lg={4}>
@@ -166,7 +171,7 @@ export default function Cart() {
               <hr />
             </Row>
 
-            <Button variant="dark" className="w-100" onClick={handleCheckout}>
+            <Button variant="dark" className="w-100" onClick={handleCheckout} disabled={disabled}>
               Checkout
             </Button>
           </Col>

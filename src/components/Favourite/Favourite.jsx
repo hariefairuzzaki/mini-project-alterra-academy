@@ -55,57 +55,59 @@ export default function Favourite() {
 
         <Row className="gy-5">
           {errorFavouriteItem && <p>Something went wrong ...</p>}
-          {loadingFavouriteItem ? (
+          {loadingFavouriteItem && (
             <div className="text-center">
               <Spinner animation="border" />
             </div>
-          ) : (
-            dataFavouriteItem?.favourites?.map((item) => (
-              <Col lg={4} md={6} key={item.id}>
-                <Card className="border-0 mx-auto">
-                  <Card.Img variant="top" src={item.addToFavourite.image1} />
-                  <Card.Body className="p-0 mt-3">
-                    <Row>
-                      <Col lg={8} md={12}>
-                        <Card.Text className="m-0">{item.addToFavourite.name}</Card.Text>
-                        <Card.Text className="text-black-50">{item.addToFavourite.title}</Card.Text>
-                      </Col>
-                      <Col lg={4} md={12}>
-                        <Card.Text className="text-end">{formatRupiah(item.addToFavourite.price)}</Card.Text>
-                      </Col>
-                    </Row>
-                    <div className="d-flex gap-3">
-                      <p className="text-black-50">Size {item.size}</p>
-                      <p className="text-black-50">QTY {item.quantity}</p>
-                    </div>
-                  </Card.Body>
-                  <div className="d-flex gap-3">
-                    <Button
-                      variant="outline-dark"
-                      className="w-100"
-                      onClick={() => {
-                        removeFromFavourite({
-                          variables: { id: item.id },
-                        });
-                        setRemoveProduct(true);
-                      }}
-                    >
-                      Remove
-                    </Button>
-                    <Button
-                      variant="dark"
-                      className="w-100"
-                      onClick={() => {
-                        isInCart ? setAlreadyExist(true) : handleAddToCart();
-                      }}
-                    >
-                      Add to bag
-                    </Button>
-                  </div>
-                </Card>
-              </Col>
-            ))
           )}
+          {dataFavouriteItem?.favourites.length === 0 && (
+            <h3 className="text-center py-5">Items added to your Favourites will be saved here.</h3>
+          )}
+          {dataFavouriteItem?.favourites?.map((item) => (
+            <Col lg={4} md={6} key={item.id}>
+              <Card className="border-0 mx-auto">
+                <Card.Img variant="top" src={item.addToFavourite.image1} />
+                <Card.Body className="p-0 mt-3">
+                  <Row>
+                    <Col lg={8} md={12}>
+                      <Card.Text className="m-0">{item.addToFavourite.name}</Card.Text>
+                      <Card.Text className="text-black-50">{item.addToFavourite.title}</Card.Text>
+                    </Col>
+                    <Col lg={4} md={12}>
+                      <Card.Text className="text-end">{formatRupiah(item.addToFavourite.price)}</Card.Text>
+                    </Col>
+                  </Row>
+                  <div className="d-flex gap-3">
+                    <p className="text-black-50">Size {item.size}</p>
+                    <p className="text-black-50">QTY {item.quantity}</p>
+                  </div>
+                </Card.Body>
+                <div className="d-flex gap-3">
+                  <Button
+                    variant="outline-dark"
+                    className="w-100"
+                    onClick={() => {
+                      removeFromFavourite({
+                        variables: { id: item.id },
+                      });
+                      setRemoveProduct(true);
+                    }}
+                  >
+                    Remove
+                  </Button>
+                  <Button
+                    variant="dark"
+                    className="w-100"
+                    onClick={() => {
+                      isInCart ? setAlreadyExist(true) : handleAddToCart();
+                    }}
+                  >
+                    Add to bag
+                  </Button>
+                </div>
+              </Card>
+            </Col>
+          ))}
         </Row>
       </Container>
       <ToastAddToCart showAddCart={showAddCart} setShowAddCart={setShowAddCart} />

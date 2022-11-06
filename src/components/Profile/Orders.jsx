@@ -12,7 +12,7 @@ export default function Orders() {
     <section id="orders" className="mt-5">
       <Container>
         <Row>
-          <h3 className="mb-3">Your Orders</h3>
+          <h3 className="mb-4">History Orders</h3>
           {errorOrders && <p>Something went wrong ...</p>}
           {loadingOrders ? (
             <div className="text-center">

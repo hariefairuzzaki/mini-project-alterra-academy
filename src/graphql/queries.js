@@ -1,26 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const RetrieveProductByGender = gql`
-  query MyQuery($gender: String) {
-    product(where: { gender: { _eq: $gender } }) {
-      id
-      name
-      title
-      price
-      type
-      gender
-      image1
-      image2
-      image3
-      image4
-      description
-    }
-  }
-`;
-
 export const RetrieveProduct = gql`
-  query RetrieveProduct {
-    product {
+  query RetrieveProduct($price: order_by = asc) {
+    product(order_by: { price: $price }) {
       id
       name
       title
@@ -54,8 +36,8 @@ export const GetProductById = gql`
 `;
 
 export const GetProductByMen = gql`
-  query GetProductByMen($gender: String = "men") {
-    product(where: { gender: { _eq: $gender } }) {
+  query GetProductByMen($gender: String = "men", $price: order_by = asc) {
+    product(order_by: { price: $price }, where: { gender: { _eq: $gender } }) {
       id
       name
       title
@@ -72,8 +54,8 @@ export const GetProductByMen = gql`
 `;
 
 export const GetProductByWomen = gql`
-  query GetProductByWomen($gender: String = "women") {
-    product(where: { gender: { _eq: $gender } }) {
+  query GetProductByWomen($gender: String = "women", $price: order_by = asc) {
+    product(order_by: { price: $price }, where: { gender: { _eq: $gender } }) {
       id
       name
       title
@@ -90,8 +72,8 @@ export const GetProductByWomen = gql`
 `;
 
 export const GetProductByKids = gql`
-  query GetProductByKids($gender: String = "kids") {
-    product(where: { gender: { _eq: $gender } }) {
+  query GetProductByKids($gender: String = "kids", $price: order_by = asc) {
+    product(order_by: { price: $price }, where: { gender: { _eq: $gender } }) {
       id
       name
       title
@@ -108,8 +90,8 @@ export const GetProductByKids = gql`
 `;
 
 export const GetProductByClothing = gql`
-  query GetProductByClothing($type: String = "clothing") {
-    product(where: { type: { _eq: $type } }) {
+  query GetProductByClothing($type: String = "clothing", $price: order_by = asc) {
+    product(order_by: { price: $price }, where: { type: { _eq: $type } }) {
       id
       name
       title
@@ -126,8 +108,8 @@ export const GetProductByClothing = gql`
 `;
 
 export const GetProductByShoes = gql`
-  query GetProductByShoes($type: String = "shoes") {
-    product(where: { type: { _eq: $type } }) {
+  query GetProductByShoes($type: String = "shoes", $price: order_by = asc) {
+    product(order_by: { price: $price }, where: { type: { _eq: $type } }) {
       id
       name
       title
@@ -144,8 +126,8 @@ export const GetProductByShoes = gql`
 `;
 
 export const SearchProduct = gql`
-  query SearchProduct($name: String) {
-    product(where: { name: { _ilike: $name } }) {
+  query SearchProduct($name: String, $price: order_by = asc) {
+    product(order_by: { price: $price }, where: { name: { _ilike: $name } }) {
       id
       name
       title
@@ -163,7 +145,7 @@ export const SearchProduct = gql`
 
 export const CartItem = gql`
   query CartItem {
-    cart(order_by: { id: asc }) {
+    cart {
       id
       product_id
       quantity
@@ -220,6 +202,7 @@ export const Orders = gql`
       detail_address
       product_id
       total_price
+      pay_method
       created_at
       order {
         id
@@ -248,6 +231,7 @@ export const GetOrderById = gql`
       address
       detail_address
       total_price
+      pay_method
       created_at
       cart {
         size

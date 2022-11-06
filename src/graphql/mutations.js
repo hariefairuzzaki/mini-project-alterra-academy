@@ -138,6 +138,7 @@ export const Checkout = gql`
     $address: String
     $detail_address: String
     $total_price: bigint
+    $pay_method: String
     $id: Int
     $name: String
     $title: String
@@ -162,6 +163,7 @@ export const Checkout = gql`
         address: $address
         detail_address: $detail_address
         total_price: $total_price
+        pay_method: $pay_method
         order: {
           data: {
             id: $id
@@ -194,6 +196,7 @@ export const Checkout = gql`
         detail_address
         product_id
         total_price
+        pay_method
         order {
           id
           name

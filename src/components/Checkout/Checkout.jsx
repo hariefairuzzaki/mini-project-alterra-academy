@@ -11,6 +11,7 @@ const baseData = {
   phone_number: "",
   address: "",
   detail_address: "",
+  pay_method: "",
 };
 
 export default function Checkout() {
@@ -18,6 +19,14 @@ export default function Checkout() {
   const { checkout } = useCheckout();
   const [data, setData] = useState(baseData);
   const [show, setShow] = useState(false);
+
+  const disabled =
+    data.first_name === "" ||
+    data.last_name === "" ||
+    data.phone_number === "" ||
+    data.address === "" ||
+    data.detail_address === "" ||
+    data.pay_method === "";
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -30,6 +39,8 @@ export default function Checkout() {
       ...data,
       [name]: value,
     });
+
+    console.log(value);
   };
 
   const handleCheckout = () =>
@@ -42,6 +53,7 @@ export default function Checkout() {
           address: data.address,
           detail_address: data.detail_address,
           total_price: state.total,
+          pay_method: data.pay_method,
 
           id: item.addToCart.id,
           name: item.addToCart.name,
@@ -68,14 +80,14 @@ export default function Checkout() {
     <section id="checkout">
       <Container>
         <h2 className="text-center mb-5">Checkout</h2>
-        <Row>
-          <Col lg={7}>
+        <Row className="gy-4">
+          <Col lg={7} className="ms-5">
             <h4 className="mb-4">Delivery</h4>
             <h5 className="mb-4">Enter your name and address</h5>
 
             <Form className="w-75">
               <Form.Group controlId="floatingInput" className="mb-3">
-                <Form.Label>First name</Form.Label>
+                <Form.Label>First name*</Form.Label>
                 <Form.Control
                   name="first_name"
                   value={data.first_name}
@@ -86,7 +98,7 @@ export default function Checkout() {
               </Form.Group>
 
               <Form.Group controlId="floatingInput" className="mb-3">
-                <Form.Label>Last Name</Form.Label>
+                <Form.Label>Last Name*</Form.Label>
                 <Form.Control
                   name="last_name"
                   value={data.last_name}
@@ -97,7 +109,7 @@ export default function Checkout() {
               </Form.Group>
 
               <Form.Group controlId="floatingInput" className="mb-3">
-                <Form.Label>Phone Number</Form.Label>
+                <Form.Label>Phone Number*</Form.Label>
                 <Form.Control
                   name="phone_number"
                   value={data.phone_number}
@@ -108,7 +120,7 @@ export default function Checkout() {
               </Form.Group>
 
               <Form.Group controlId="floatingInput" className="mb-3">
-                <Form.Label>Address</Form.Label>
+                <Form.Label>Address*</Form.Label>
                 <Form.Control
                   as="textarea"
                   name="address"
@@ -120,26 +132,63 @@ export default function Checkout() {
               </Form.Group>
 
               <Form.Group controlId="floatingInput" className="mb-3">
-                <Form.Label>Detail Address</Form.Label>
+                <Form.Label>Detail Address*</Form.Label>
                 <Form.Control
                   as="textarea"
                   name="detail_address"
                   value={data.detail_address}
                   onChange={handleInput}
-                  placeholder="the white house, floor 20, etc."
+                  placeholder="The white house, Floor 20, etc."
                   style={{ height: "100px" }}
                 />
               </Form.Group>
             </Form>
 
-            <h4 className="my-4">Payment</h4>
+            <h4 className="my-4">Payment Methods</h4>
 
-            <Card className="w-75">
-              <Card.Body>
-                <Card.Title>Manual Payment</Card.Title>
-                <Card.Text className="fw-semibold">BNI: 0827771372 | Harie Fairuz Zaki</Card.Text>
-              </Card.Body>
-            </Card>
+            <Form.Select name="pay_method" className="w-75" value={data.pay_method} onChange={handleInput}>
+              <option value="">Choose Method</option>
+              <option value="Cash on Delivery">Cash on Delivery</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="E-Wallet">E-Wallet</option>
+            </Form.Select>
+
+            {data.pay_method === "Cash on Delivery" && (
+              <Card className="w-75 mt-4">
+                <Card.Body>
+                  <Card.Title>Payment Information</Card.Title>
+                  <hr />
+                  <Card.Text>
+                    Please prepare exact amount money, our courier service staff will reach your doorstep as soon as
+                    possible
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            )}
+            {data.pay_method === "Bank Transfer" && (
+              <Card className="w-75 mt-4">
+                <Card.Body>
+                  <Card.Title>Payment Information</Card.Title>
+                  <hr />
+                  <Card.Text className="m-0 fw-semibold">Bank: BNI</Card.Text>
+                  <Card.Text className="m-0 fw-semibold">Account Holder: Harie Fairuz Zaki</Card.Text>
+                  <Card.Text className="fw-semibold">Account Number: 0827771372</Card.Text>
+                  <Card.Text>Send the transfer receipt to harie@gmail.com for confirmation</Card.Text>
+                </Card.Body>
+              </Card>
+            )}
+            {data.pay_method === "E-Wallet" && (
+              <Card className="w-75 mt-4">
+                <Card.Body>
+                  <Card.Title>Payment Information</Card.Title>
+                  <hr />
+                  <Card.Text className="m-0 fw-semibold">Bank: Dana</Card.Text>
+                  <Card.Text className="m-0 fw-semibold">Account Holder: Harie Fairuz Zaki</Card.Text>
+                  <Card.Text className="fw-semibold">Account Number: 089524376821</Card.Text>
+                  <Card.Text>Send the transfer receipt to harie@gmail.com for confirmation</Card.Text>
+                </Card.Body>
+              </Card>
+            )}
 
             <Button
               type="submit"
@@ -149,9 +198,11 @@ export default function Checkout() {
                 handleCheckout();
                 handleShow();
               }}
+              disabled={disabled}
             >
               Submit
             </Button>
+
             <Modal show={show} onHide={handleClose}>
               <Modal.Header closeButton>
                 <Modal.Title>Nike</Modal.Title>

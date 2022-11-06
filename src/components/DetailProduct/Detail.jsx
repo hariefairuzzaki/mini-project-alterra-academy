@@ -24,6 +24,9 @@ export default function Detail() {
   const [showAddFav, setShowAddFav] = useState(false);
   const [showAlreadyExist, setAlreadyExist] = useState(false);
 
+  // conditional disable button
+  const disabled = pickSize === "";
+
   // id product
   const productItems = dataProductById?.product?.map((item) => item.id) || [];
 
@@ -83,15 +86,6 @@ export default function Detail() {
     );
   };
 
-  // validation size
-  const handleValidCart = () => {
-    pickSize === "" ? alert("Please choose size") : handleAddToCart();
-  };
-
-  const handleValidFav = () => {
-    pickSize === "" ? alert("Please choose size") : handleAddToFav();
-  };
-
   return (
     <section>
       <Container>
@@ -102,7 +96,7 @@ export default function Detail() {
           </div>
         ) : (
           dataProductById.product?.map((item) => (
-            <Row key={item.id}>
+            <Row key={item.id} className="gy-4">
               <Col lg={8} md={8}>
                 <Row className="gy-4">
                   <Col lg={6}>
@@ -124,7 +118,7 @@ export default function Detail() {
                 <p>{item.title}</p>
                 <p>{formatRupiah(item.price)}</p>
 
-                <p>Select Size</p>
+                <p>Select Size*</p>
 
                 {item.type === "clothing" ? (
                   <ButtonSizeClothing pickSize={pickSize} setPickSize={setPickSize} />
@@ -136,16 +130,18 @@ export default function Detail() {
                   <Button
                     variant="dark"
                     onClick={() => {
-                      isInCart ? setAlreadyExist(true) : handleValidCart();
+                      isInCart ? setAlreadyExist(true) : handleAddToCart();
                     }}
+                    disabled={disabled}
                   >
                     Add to bag
                   </Button>
                   <Button
                     variant="outline-dark"
                     onClick={() => {
-                      isInFav ? setAlreadyExist(true) : handleValidFav();
+                      isInFav ? setAlreadyExist(true) : handleAddToFav();
                     }}
+                    disabled={disabled}
                   >
                     Favourite <AiOutlineHeart />
                   </Button>
