@@ -2,12 +2,11 @@ import { gql } from "@apollo/client";
 
 export const AddToCart = gql`
   mutation AddTocart(
+    $size: String
     $id: Int
     $name: String
     $title: String
     $price: Int
-    $size: String
-    $quantity: Int
     $type: String
     $gender: String
     $image1: String
@@ -18,6 +17,7 @@ export const AddToCart = gql`
   ) {
     insert_cart_one(
       object: {
+        size: $size
         quantity: 1
         addToCart: {
           data: {
@@ -25,8 +25,6 @@ export const AddToCart = gql`
             name: $name
             title: $title
             price: $price
-            size: $size
-            quantity: $quantity
             type: $type
             gender: $gender
             image1: $image1
@@ -41,14 +39,13 @@ export const AddToCart = gql`
     ) {
       id
       product_id
+      size
       quantity
       addToCart {
         id
         name
         title
         price
-        size
-        quantity
         type
         gender
         image1
@@ -71,12 +68,11 @@ export const RemoveFromCart = gql`
 
 export const AddToFavourite = gql`
   mutation AddToFavourite(
+    $size: String
     $id: Int
     $name: String
     $title: String
     $price: Int
-    $size: String
-    $quantity: Int
     $type: String
     $gender: String
     $image1: String
@@ -87,14 +83,14 @@ export const AddToFavourite = gql`
   ) {
     insert_favourites_one(
       object: {
+        size: $size
+        quantity: 1
         addToFavourite: {
           data: {
             id: $id
             name: $name
             title: $title
             price: $price
-            size: $size
-            quantity: $quantity
             type: $type
             gender: $gender
             image1: $image1
@@ -114,8 +110,6 @@ export const AddToFavourite = gql`
         name
         title
         price
-        size
-        quantity
         type
         gender
         image1
@@ -148,8 +142,6 @@ export const Checkout = gql`
     $name: String
     $title: String
     $price: Int
-    $size: String
-    $quantity: Int
     $type: String
     $gender: String
     $image1: String
@@ -157,7 +149,10 @@ export const Checkout = gql`
     $image3: String
     $image4: String
     $description: String
-    $id_cart: Int!
+    $product_id: Int
+    $size: String
+    $quantity: Int
+    $id_cart: Int
   ) {
     insert_orders(
       objects: {
@@ -173,8 +168,6 @@ export const Checkout = gql`
             name: $name
             title: $title
             price: $price
-            size: $size
-            quantity: $quantity
             type: $type
             gender: $gender
             image1: $image1
@@ -184,6 +177,10 @@ export const Checkout = gql`
             description: $description
           }
           on_conflict: { constraint: product_pkey, update_columns: id }
+        }
+        cart: {
+          data: { product_id: $product_id, size: $size, quantity: $quantity }
+          on_conflict: { constraint: cart_pkey, update_columns: id }
         }
       }
     ) {
@@ -202,8 +199,6 @@ export const Checkout = gql`
           name
           title
           price
-          size
-          quantity
           type
           gender
           image1
@@ -211,6 +206,10 @@ export const Checkout = gql`
           image3
           image4
           description
+        }
+        cart {
+          size
+          quantity
         }
       }
     }

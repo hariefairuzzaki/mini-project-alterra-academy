@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Col, Container, Nav, Row } from "react-bootstrap";
-import { BsTwitter } from "react-icons/bs";
 import { BsFacebook } from "react-icons/bs";
-import { BsYoutube } from "react-icons/bs";
 import { BsInstagram } from "react-icons/bs";
+import { BsTwitter } from "react-icons/bs";
+import { BsYoutube } from "react-icons/bs";
 
 export default function Footer() {
   return (

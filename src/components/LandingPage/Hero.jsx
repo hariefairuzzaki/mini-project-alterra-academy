@@ -14,9 +14,6 @@ export default function Hero() {
             <Button as={Link} to="/product" variant="outline-secondary" className="mt-3 me-3 fw-semibold">
               Shop Now
             </Button>
-            <Button variant="secondary" className="mt-3 fw-semibold">
-              Learn More
-            </Button>
           </div>
         </Col>
         <Col lg={6} md={12}>

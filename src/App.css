@@ -24,6 +24,8 @@ section {
   left: 40px;
 }
 
+#navbar a,
+#orders a,
 #clothingfilter a,
 #shoesfilter a,
 #menfilter a,
@@ -58,4 +60,18 @@ section {
 
 #navs a:hover {
   text-decoration: underline !important;
+}
+
+.btn-icon {
+  width: 35px;
+  height: 35px;
+  --bs-btn-padding-x: 0.2rem !important;
+  --bs-btn-padding-y: 0.3rem !important;
+}
+
+.btn-icon2 {
+  width: 35px;
+  height: 35px;
+  --bs-btn-padding-x: 0.3rem !important;
+  --bs-btn-padding-y: 0rem !important;
 }

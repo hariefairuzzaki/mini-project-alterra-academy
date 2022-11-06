@@ -1,19 +1,17 @@
 import React from "react";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import { FreeMode, Keyboard, Mousewheel, Navigation, Scrollbar } from "swiper";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
+import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
 import { BsChevronRight } from "react-icons/bs";
 import { BsChevronLeft } from "react-icons/bs";
-import { Link } from "react-router-dom";
-import useGetProductByShoes from "../../hooks/hooksFilterType/useGetProductByShoes";
 import { formatRupiah } from "../../lib/formatRupiah";
+import { FreeMode, Keyboard, Mousewheel, Navigation, Scrollbar } from "swiper";
+import { Link } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import useGetProductByShoes from "../../hooks/hooksFilterType/useGetProductByShoes";
+import "swiper/css";
+import "swiper/css/navigation";
 
 export default function Shoes() {
   const { dataProductByShoes, loadingProductByShoes, errorProductByShoes } = useGetProductByShoes();
-
-  if (errorProductByShoes) return <p>Something went wrong ...</p>;
 
   return (
     <section id="shoes">
@@ -71,8 +69,11 @@ export default function Shoes() {
           modules={[FreeMode, Keyboard, Mousewheel, Navigation, Scrollbar]}
           className="mySwiper"
         >
+          {errorProductByShoes && <p>Something went wrong ...</p>}
           {loadingProductByShoes ? (
-            <p>Loading ...</p>
+            <div className="text-center">
+              <Spinner animation="border" />
+            </div>
           ) : (
             dataProductByShoes.product?.map((item) => (
               <SwiperSlide key={item.id}>

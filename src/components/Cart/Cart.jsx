@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { AiOutlineDelete } from "react-icons/ai";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { formatRupiah } from "../../lib/formatRupiah";
+import { useNavigate } from "react-router-dom";
+import ToastAddToFav from "../Toast/ToastAddToFav";
+import ToastAlreadyExist from "../Toast/ToastAlreadyExist";
+import ToastRemoveProduct from "../Toast/ToastRemoveProduct";
 import useAddToFavourite from "../../hooks/hooksFavourites/useAddToFavourite";
 import useCartItem from "../../hooks/hooksCart/useCartItem";
-import useRemoveFromCart from "../../hooks/hooksCart/useRemoveFromCart";
-import { useNavigate } from "react-router-dom";
-import ToastRemoveProduct from "../Toast/ToastRemoveProduct";
-import ToastAddToFav from "../Toast/ToastAddToFav";
 import useFavouriteItem from "../../hooks/hooksFavourites/useFavouriteItem";
-import ToastAlreadyExist from "../Toast/ToastAlreadyExist";
+import useRemoveFromCart from "../../hooks/hooksCart/useRemoveFromCart";
 
 export default function Cart() {
   const { dataCartItem, loadingCartItem, errorCartItem } = useCartItem();
   const { addToFavourite } = useAddToFavourite();
-  const { removeFromCart } = useRemoveFromCart();
   const { dataFavouriteItem } = useFavouriteItem();
+  const { removeFromCart } = useRemoveFromCart();
   const [showAddFav, setShowAddFav] = useState(false);
   const [showRemoveProduct, setRemoveProduct] = useState(false);
   const [showAlreadyExist, setAlreadyExist] = useState(false);
@@ -40,7 +40,7 @@ export default function Cart() {
   const favouriteItems = dataFavouriteItem?.favourites?.map((item) => item.product_id);
   const productItems = dataCartItem?.cart?.map((item) => item.addToCart.id) || [];
 
-  const IsInCart = favouriteItems?.some((item) => item === productItems[0]);
+  const isInFav = favouriteItems?.some((item) => item === productItems[0]);
 
   // add to favourite
   const handleAddToFav = () => {
@@ -52,8 +52,6 @@ export default function Cart() {
             name: item.addToCart.name,
             title: item.addToCart.title,
             price: item.addToCart.price,
-            size: item.addToCart.size,
-            quantity: item.addToCart.quantity,
             type: item.addToCart.type,
             gender: item.addToCart.gender,
             image1: item.addToCart.image1,
@@ -75,7 +73,9 @@ export default function Cart() {
             <h3 className="mb-4">Bag</h3>
             {errorCartItem && <p>Something went wrong ...</p>}
             {loadingCartItem ? (
-              <p>Loading ...</p>
+              <div className="text-center">
+                <Spinner animation="border" />
+              </div>
             ) : (
               dataCartItem?.cart?.map((item) => (
                 <Row key={item.id} className="mb-4">
@@ -87,55 +87,33 @@ export default function Cart() {
                       <Col>
                         <p className="m-0">{item.addToCart.name}</p>
                         <p className="m-0 text-black-50">{item.addToCart.title}</p>
-                        <div className="d-flex  mt-2">
-                          <div className="me-3">
-                            <Form.Group className="mb-3 d-flex">
-                              <Form.Label htmlFor="size" className="me-2 text-black-50">
-                                Size
-                              </Form.Label>
-                              <Form.Select id="size">
-                                <option>40</option>
-                                <option>41</option>
-                                <option>42</option>
-                                <option>43</option>
-                                <option>45</option>
-                              </Form.Select>
-                            </Form.Group>
-                          </div>
-                          <div>
-                            <Form.Group className="mb-3 d-flex">
-                              <Form.Label htmlFor="quantity" className="me-2 text-black-50">
-                                Quantity
-                              </Form.Label>
-                              <Form.Select id="quantity">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                              </Form.Select>
-                            </Form.Group>
-                          </div>
+                        <div className="d-flex gap-3">
+                          <p className="text-black-50">Size {item.size}</p>
+                          <p className="text-black-50 mx-2">QTY {item.quantity}</p>
                         </div>
                         <div>
-                          <AiOutlineHeart
-                            size="25px"
-                            style={{ cursor: "pointer" }}
-                            className="me-3"
+                          <Button
+                            variant="light"
+                            className="btn-icon rounded-circle me-3"
                             onClick={() => {
-                              IsInCart ? setAlreadyExist(true) : handleAddToFav();
+                              isInFav ? setAlreadyExist(true) : handleAddToFav();
                             }}
-                          />
+                          >
+                            <AiOutlineHeart size="25px" />
+                          </Button>
 
-                          <AiOutlineDelete
-                            size="25px"
-                            style={{ cursor: "pointer" }}
+                          <Button
+                            variant="light"
+                            className="btn-icon rounded-circle"
                             onClick={() => {
                               removeFromCart({
                                 variables: { id: item.id },
                               });
                               setRemoveProduct(true);
                             }}
-                          />
+                          >
+                            <AiOutlineDelete size="25px" />
+                          </Button>
                         </div>
                       </Col>
                       <Col>

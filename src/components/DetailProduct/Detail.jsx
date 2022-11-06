@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { formatRupiah } from "../../lib/formatRupiah";
 import ButtonSizeClothing from "./ButtonSizeClothing";
 import ButtonSizeShoes from "./ButtonSizeShoes";
@@ -10,22 +10,30 @@ import ToastAlreadyExist from "../Toast/ToastAlreadyExist";
 import useAddToCart from "../../hooks/hooksCart/useAddToCart";
 import useAddToFavourite from "../../hooks/hooksFavourites/useAddToFavourite";
 import useFavouriteItem from "../../hooks/hooksFavourites/useFavouriteItem";
-import useGetProductById from "../../hooks/useGetProductById";
+import useGetProductById from "../../hooks/hooksProduct/useGetProductById";
+import useCartItem from "../../hooks/hooksCart/useCartItem";
 
 export default function Detail() {
   const { addToCart } = useAddToCart();
   const { addToFavourite } = useAddToFavourite();
+  const { dataCartItem } = useCartItem();
   const { dataFavouriteItem } = useFavouriteItem();
   const { dataProductById, loadingProductById, errorProductById } = useGetProductById();
+  const [pickSize, setPickSize] = useState("");
   const [showAddCart, setShowAddCart] = useState(false);
   const [showAddFav, setShowAddFav] = useState(false);
   const [showAlreadyExist, setAlreadyExist] = useState(false);
 
-  // if product already in favourite
-  const favouriteItems = dataFavouriteItem?.favourites?.map((item) => item.product_id);
+  // id product
   const productItems = dataProductById?.product?.map((item) => item.id) || [];
 
-  const IsInCart = favouriteItems?.some((item) => item === productItems[0]);
+  // if product already in cart
+  const cartItems = dataCartItem?.cart?.map((item) => item.product_id);
+  const isInCart = cartItems?.some((item) => item === productItems[0]);
+
+  // if product already in favourite
+  const favouriteItems = dataFavouriteItem?.favourites?.map((item) => item.product_id);
+  const isInFav = favouriteItems?.some((item) => item === productItems[0]);
 
   // handle add to favourite
   const handleAddToFav = () => {
@@ -33,12 +41,11 @@ export default function Detail() {
       (item) =>
         addToFavourite({
           variables: {
+            size: pickSize,
             id: item.id,
             name: item.name,
             title: item.title,
             price: item.price,
-            size: item.size,
-            quantity: item.quantity,
             type: item.type,
             gender: item.gender,
             image1: item.image1,
@@ -58,12 +65,11 @@ export default function Detail() {
       (item) =>
         addToCart({
           variables: {
+            size: pickSize,
             id: item.id,
             name: item.name,
             title: item.title,
             price: item.price,
-            size: item.size,
-            quantity: item.quantity,
             type: item.type,
             gender: item.gender,
             image1: item.image1,
@@ -77,12 +83,23 @@ export default function Detail() {
     );
   };
 
+  // validation size
+  const handleValidCart = () => {
+    pickSize === "" ? alert("Please choose size") : handleAddToCart();
+  };
+
+  const handleValidFav = () => {
+    pickSize === "" ? alert("Please choose size") : handleAddToFav();
+  };
+
   return (
     <section>
       <Container>
         {errorProductById && <p>Something went wrong ...</p>}
         {loadingProductById ? (
-          <p>Loading ...</p>
+          <div className="text-center">
+            <Spinner animation="border" />
+          </div>
         ) : (
           dataProductById.product?.map((item) => (
             <Row key={item.id}>
@@ -109,32 +126,29 @@ export default function Detail() {
 
                 <p>Select Size</p>
 
-                {item.type === "clothing" ? <ButtonSizeClothing /> : <ButtonSizeShoes />}
+                {item.type === "clothing" ? (
+                  <ButtonSizeClothing pickSize={pickSize} setPickSize={setPickSize} />
+                ) : (
+                  <ButtonSizeShoes pickSize={pickSize} setPickSize={setPickSize} />
+                )}
 
                 <div className="d-grid gap-2 mt-3">
                   <Button
                     variant="dark"
                     onClick={() => {
-                      handleAddToCart();
+                      isInCart ? setAlreadyExist(true) : handleValidCart();
                     }}
                   >
                     Add to bag
                   </Button>
-
-                  <ToastAddToCart showAddCart={showAddCart} setShowAddCart={setShowAddCart} />
-
                   <Button
                     variant="outline-dark"
                     onClick={() => {
-                      IsInCart ? setAlreadyExist(true) : handleAddToFav();
+                      isInFav ? setAlreadyExist(true) : handleValidFav();
                     }}
                   >
                     Favourite <AiOutlineHeart />
                   </Button>
-
-                  <ToastAddToFav showAddFav={showAddFav} setShowAddFav={setShowAddFav} />
-
-                  <ToastAlreadyExist showAlreadyExist={showAlreadyExist} setAlreadyExist={setAlreadyExist} />
                 </div>
 
                 <p className="mt-3">{item.description}</p>
@@ -142,6 +156,9 @@ export default function Detail() {
             </Row>
           ))
         )}
+        <ToastAddToCart showAddCart={showAddCart} setShowAddCart={setShowAddCart} />
+        <ToastAddToFav showAddFav={showAddFav} setShowAddFav={setShowAddFav} />
+        <ToastAlreadyExist showAlreadyExist={showAlreadyExist} setAlreadyExist={setAlreadyExist} />
       </Container>
     </section>
   );

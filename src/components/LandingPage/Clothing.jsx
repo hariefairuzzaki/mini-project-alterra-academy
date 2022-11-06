@@ -1,14 +1,14 @@
 import React from "react";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import { FreeMode, Keyboard, Mousewheel, Navigation, Scrollbar } from "swiper";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
+import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
 import { BsChevronRight } from "react-icons/bs";
 import { BsChevronLeft } from "react-icons/bs";
-import { Link } from "react-router-dom";
-import useGetProductByClothing from "../../hooks/hooksFilterType/useGetProductByClothing";
 import { formatRupiah } from "../../lib/formatRupiah";
+import { FreeMode, Keyboard, Mousewheel, Navigation, Scrollbar } from "swiper";
+import { Link } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import useGetProductByClothing from "../../hooks/hooksFilterType/useGetProductByClothing";
+import "swiper/css";
+import "swiper/css/navigation";
 
 export default function Clothing() {
   const { dataProductByClothing, loadingProductByClothing, errorProductByClothing } = useGetProductByClothing();
@@ -73,7 +73,9 @@ export default function Clothing() {
           {errorProductByClothing && <p>Something went wrong ...</p>}
 
           {loadingProductByClothing ? (
-            <p>Loading ...</p>
+            <div className="text-center">
+              <Spinner animation="border" />
+            </div>
           ) : (
             dataProductByClothing?.product?.map((item) => (
               <SwiperSlide key={item.id}>

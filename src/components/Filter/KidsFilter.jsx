@@ -1,8 +1,8 @@
 import React from "react";
-import { Card, Col, Container, Form, Nav, NavDropdown, Row } from "react-bootstrap";
+import { Card, Col, Container, Form, Nav, NavDropdown, Row, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import useGetProductByKids from "../../hooks/hooksFilterGender/useGetProductByKids";
 import { formatRupiah } from "../../lib/formatRupiah";
+import useGetProductByKids from "../../hooks/hooksFilterGender/useGetProductByKids";
 
 export default function KidsFilter() {
   const { dataProductByKids, loadingProductByKids, errorProductByKids } = useGetProductByKids();
@@ -42,7 +42,9 @@ export default function KidsFilter() {
               {errorProductByKids && <p>Something went wrong ...</p>}
 
               {loadingProductByKids ? (
-                <p>Loading ...</p>
+                <div className="text-center">
+                  <Spinner animation="border" />
+                </div>
               ) : (
                 dataProductByKids.product?.map((item) => (
                   <Col lg={4} key={item.id}>

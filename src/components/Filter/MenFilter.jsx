@@ -1,8 +1,8 @@
 import React from "react";
-import { Card, Col, Container, Form, Nav, NavDropdown, Row } from "react-bootstrap";
-import useGetProductByMen from "../../hooks/hooksFilterGender/useGetProductByMen";
-import { Link } from "react-router-dom";
+import { Card, Col, Container, Form, Nav, NavDropdown, Row, Spinner } from "react-bootstrap";
 import { formatRupiah } from "../../lib/formatRupiah";
+import { Link } from "react-router-dom";
+import useGetProductByMen from "../../hooks/hooksFilterGender/useGetProductByMen";
 
 export default function MenFilter() {
   const { dataProductByMen, loadingProductByMen, errorProductByMen } = useGetProductByMen();
@@ -42,7 +42,9 @@ export default function MenFilter() {
               {errorProductByMen && <p>Something went wrong ...</p>}
 
               {loadingProductByMen ? (
-                <p>Loading ...</p>
+                <div className="text-center">
+                  <Spinner animation="border" />
+                </div>
               ) : (
                 dataProductByMen.product?.map((item) => (
                   <Col lg={4} key={item.id}>

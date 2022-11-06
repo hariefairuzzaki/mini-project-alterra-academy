@@ -1,5 +1,23 @@
 import { gql } from "@apollo/client";
 
+export const RetrieveProductByGender = gql`
+  query MyQuery($gender: String) {
+    product(where: { gender: { _eq: $gender } }) {
+      id
+      name
+      title
+      price
+      type
+      gender
+      image1
+      image2
+      image3
+      image4
+      description
+    }
+  }
+`;
+
 export const RetrieveProduct = gql`
   query RetrieveProduct {
     product {
@@ -7,8 +25,6 @@ export const RetrieveProduct = gql`
       name
       title
       price
-      size
-      quantity
       type
       gender
       image1
@@ -26,8 +42,6 @@ export const GetProductById = gql`
       name
       title
       price
-      size
-      quantity
       type
       gender
       image1
@@ -46,8 +60,6 @@ export const GetProductByMen = gql`
       name
       title
       price
-      size
-      quantity
       type
       gender
       description
@@ -66,8 +78,6 @@ export const GetProductByWomen = gql`
       name
       title
       price
-      size
-      quantity
       type
       gender
       description
@@ -86,8 +96,6 @@ export const GetProductByKids = gql`
       name
       title
       price
-      size
-      quantity
       type
       gender
       description
@@ -106,8 +114,6 @@ export const GetProductByClothing = gql`
       name
       title
       price
-      size
-      quantity
       type
       gender
       description
@@ -126,8 +132,6 @@ export const GetProductByShoes = gql`
       name
       title
       price
-      size
-      quantity
       type
       gender
       description
@@ -146,8 +150,6 @@ export const SearchProduct = gql`
       name
       title
       price
-      size
-      quantity
       type
       gender
       description
@@ -161,17 +163,16 @@ export const SearchProduct = gql`
 
 export const CartItem = gql`
   query CartItem {
-    cart {
+    cart(order_by: { id: asc }) {
       id
       product_id
       quantity
+      size
       addToCart {
         id
         name
         title
         price
-        size
-        quantity
         type
         gender
         image1
@@ -189,13 +190,13 @@ export const FavouriteItem = gql`
     favourites {
       id
       product_id
+      quantity
+      size
       addToFavourite {
         id
         name
         title
         price
-        size
-        quantity
         type
         gender
         image1
@@ -219,13 +220,12 @@ export const Orders = gql`
       detail_address
       product_id
       total_price
+      created_at
       order {
         id
         name
         title
         price
-        size
-        quantity
         type
         gender
         image1
@@ -233,6 +233,34 @@ export const Orders = gql`
         image3
         image4
         description
+      }
+    }
+  }
+`;
+
+export const GetOrderById = gql`
+  query GetOrderById($id: Int) {
+    orders(where: { id: { _eq: $id } }) {
+      id
+      first_name
+      last_name
+      phone_number
+      address
+      detail_address
+      total_price
+      created_at
+      cart {
+        size
+        quantity
+      }
+      order {
+        name
+        title
+        price
+        image1
+        image2
+        image3
+        image4
       }
     }
   }

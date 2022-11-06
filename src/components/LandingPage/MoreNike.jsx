@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import Kids from "../../assets/img/kids.png";
 import Mens from "../../assets/img/mens.png";
 import Womens from "../../assets/img/womens.png";
-import Kids from "../../assets/img/kids.png";
-import { Link } from "react-router-dom";
 
 export default function MoreNike() {
   return (

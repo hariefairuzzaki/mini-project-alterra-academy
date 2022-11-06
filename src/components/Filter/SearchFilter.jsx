@@ -1,9 +1,9 @@
 import React from "react";
 import { useEffect } from "react";
-import { Card, Col, Container, Form, Nav, NavDropdown, Row } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
-import useSearchProduct from "../../hooks/useSearchProduct";
+import { Card, Col, Container, Form, Nav, NavDropdown, Row, Spinner } from "react-bootstrap";
 import { formatRupiah } from "../../lib/formatRupiah";
+import { Link, useLocation } from "react-router-dom";
+import useSearchProduct from "../../hooks/hooksProduct/useSearchProduct";
 
 export default function SearchFilter() {
   const { state } = useLocation();
@@ -53,7 +53,9 @@ export default function SearchFilter() {
               {errorSearchProduct && <p>Something went wrong ...</p>}
 
               {loadingSearchProduct ? (
-                <p>Loading ...</p>
+                <div className="text-center">
+                  <Spinner animation="border" />
+                </div>
               ) : (
                 dataSearchProduct?.product?.map((item) => (
                   <Col lg={4} key={item.id}>

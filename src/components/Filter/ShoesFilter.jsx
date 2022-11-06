@@ -1,8 +1,8 @@
 import React from "react";
-import { Card, Col, Container, Form, Nav, NavDropdown, Row } from "react-bootstrap";
+import { Card, Col, Container, Form, Nav, NavDropdown, Row, Spinner } from "react-bootstrap";
+import { formatRupiah } from "../../lib/formatRupiah";
 import { Link } from "react-router-dom";
 import useGetProductByShoes from "../../hooks/hooksFilterType/useGetProductByShoes";
-import { formatRupiah } from "../../lib/formatRupiah";
 
 export default function ShoesFilter() {
   const { dataProductByShoes, loadingProductByShoes, errorProductByShoes } = useGetProductByShoes();
@@ -42,7 +42,9 @@ export default function ShoesFilter() {
               {errorProductByShoes && <p>Something went wrong ...</p>}
 
               {loadingProductByShoes ? (
-                <p>Loading ...</p>
+                <div className="text-center">
+                  <Spinner animation="border" />
+                </div>
               ) : (
                 dataProductByShoes.product?.map((item) => (
                   <Col lg={4} key={item.id}>

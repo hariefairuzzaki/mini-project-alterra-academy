@@ -1,9 +1,9 @@
 import React from "react";
 import { useState } from "react";
-import { Button, Card, Col, Container, Form, Modal, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Form, Modal, Row, Spinner } from "react-bootstrap";
+import { formatRupiah } from "../../lib/formatRupiah";
 import { Link, useLocation } from "react-router-dom";
 import useCheckout from "../../hooks/hooksOrders/useCheckout";
-import { formatRupiah } from "../../lib/formatRupiah";
 
 const baseData = {
   first_name: "",
@@ -47,8 +47,6 @@ export default function Checkout() {
           name: item.addToCart.name,
           title: item.addToCart.title,
           price: item.addToCart.price,
-          size: item.addToCart.size,
-          quantity: item.addToCart.quantity,
           type: item.addToCart.type,
           gender: item.addToCart.gender,
           image1: item.addToCart.image1,
@@ -56,6 +54,10 @@ export default function Checkout() {
           image3: item.addToCart.image3,
           image4: item.addToCart.image4,
           description: item.addToCart.description,
+
+          product_id: item.product_id,
+          size: item.size,
+          quantity: item.quantity,
 
           id_cart: item.id,
         },
@@ -135,13 +137,14 @@ export default function Checkout() {
             <Card className="w-75">
               <Card.Body>
                 <Card.Title>Manual Payment</Card.Title>
-                <Card.Text className="fw-semibold">BNI | 0827771372 | Harie Fairuz Zaki</Card.Text>
+                <Card.Text className="fw-semibold">BNI: 0827771372 | Harie Fairuz Zaki</Card.Text>
               </Card.Body>
             </Card>
 
             <Button
               type="submit"
               variant="dark"
+              className="mt-4"
               onClick={() => {
                 handleCheckout();
                 handleShow();
@@ -201,7 +204,9 @@ export default function Checkout() {
 
             {state.errorCartItem && <p>Something went wrong ...</p>}
             {state.loadingCartItem ? (
-              <p>Loading ...</p>
+              <div className="text-center">
+                <Spinner animation="border" />
+              </div>
             ) : (
               state.dataCartItem?.cart?.map((item) => (
                 <Row className="mb-4" key={item.id}>
@@ -212,7 +217,7 @@ export default function Checkout() {
                     <p className="m-0">{item.addToCart.name}</p>
                     <p className="m-0">{item.addToCart.title}</p>
                     <p className="text-black-50 m-0">QTY {item.quantity}</p>
-                    <p className="text-black-50 m-0">Size {item.addToCart.size}</p>
+                    <p className="text-black-50 m-0">Size {item.size}</p>
                     <p className="text-black-50 m-0">{formatRupiah(item.addToCart.price)}</p>
                   </Col>
                 </Row>
