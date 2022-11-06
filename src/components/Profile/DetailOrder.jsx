@@ -51,6 +51,7 @@ export default function DetailOrder() {
                   {item.first_name} {item.last_name}
                 </p>
                 <p className="m-0 text-black-50">0{item.phone_number}</p>
+                <p className="m-0 text-black-50">Payment Method: {item.pay_method}</p>
 
                 <hr />
 

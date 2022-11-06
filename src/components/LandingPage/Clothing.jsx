@@ -27,13 +27,13 @@ export default function Clothing() {
               </Button>
 
               <Button
-                className="prev rounded-circle border-0 me-3"
+                className="prev rounded-circle border-0 d-none d-sm-inline me-3"
                 style={{ backgroundColor: "#D9D9D9", width: "40px", height: "40px" }}
               >
                 <BsChevronLeft color="#000000" />
               </Button>
               <Button
-                className="next rounded-circle border-0"
+                className="next rounded-circle border-0 d-none d-sm-inline"
                 style={{ backgroundColor: "#D9D9D9", width: "40px", height: "40px" }}
               >
                 <BsChevronRight color="#000000" />
@@ -79,7 +79,7 @@ export default function Clothing() {
           ) : (
             dataProductByClothing?.product?.map((item) => (
               <SwiperSlide key={item.id}>
-                <Card className="border-0">
+                <Card className="border-0 mb-4">
                   <Link to={`detail/${item.id}`}>
                     <Card.Img variant="top" src={item.image1} />
                     <Card.Body className="p-0 mt-3">

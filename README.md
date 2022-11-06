@@ -1,4 +1,54 @@
-# Mini Project
+# E-Commerce Nike
+
+## Tema
+
+E-Commerce Platform
+
+## Nama Aplikasi
+
+E-Commerce Nike
+
+## Deskripsi
+
+E-Commerce ini merupakan tempat untuk jual barang secara online khususnya product Nike.
+
+## MVP (Minimum Viable Product)
+
+1. Catalog Product
+2. Filter Product
+3. Add product to Favourite
+4. Add product to Cart
+5. Checkout Order
+
+## Tools
+
+- Visual Studio Code
+- React JS (CRA)
+- Node JS
+- GraphQL
+- Hasura
+- Apollo Client
+- React-router-dom
+- React-bootstrap
+- React-icons
+- Swiper JS
+- Moment JS
+
+## Reference
+
+Platform Nike: https://nike.com
+
+## PowerPoint
+
+https://docs.google.com/presentation/d/1IFUq_nyGfFEj2KUYpvnBAY5q8L44ZyUlWfG0u05kNok/edit?usp=sharing
+
+## Domain Site
+
+https://e-commerce-nike.netlify.app/
+
+---
+
+# Requirement Mini Project
 
 ## Penjelasan
 
@@ -37,7 +87,7 @@
 ## Informasi Lain
 
 - Jumlah yang akan presentasi 1 hari adalah 10 peserta (atau sesuai kesepakatan).
-- Ururtan presentasi akan dilaksanakan secara terurut.
+- Urutan presentasi akan dilaksanakan secara terurut.
 
 ## Indikator
 
@@ -51,13 +101,3 @@
 | GraphQL atau Restfull | 10%   |
 | Deploy                | 5%    |
 | Presentasi Project    | 10%   |
-
-## PowerPoint
-
-https://docs.google.com/presentation/d/1IFUq_nyGfFEj2KUYpvnBAY5q8L44ZyUlWfG0u05kNok/edit?usp=sharing
-
-## Reference
-
-1. Nike Website
-2. Newbalance Website
-3. Kick Vanue Website
