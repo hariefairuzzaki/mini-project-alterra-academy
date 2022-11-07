@@ -5,6 +5,7 @@ import { CartItem } from "../../graphql/queries";
 export default function useRemoveFromCart() {
   const [removeFromCart, { loading: loadingRemoveFromCart }] = useMutation(RemoveFromCart, {
     refetchQueries: [CartItem],
+    fetchPolicy: "network-only",
   });
   return {
     removeFromCart,
