@@ -3,7 +3,7 @@ import { SearchProduct } from "../../graphql/queries";
 
 export default function useSearchProduct() {
   const [executeSearch, { data: dataSearchProduct, loading: loadingSearchProduct, error: errorSearchProduct }] =
-    useLazyQuery(SearchProduct);
+    useLazyQuery(SearchProduct, { fetchPolicy: "network-only" });
 
   return {
     executeSearch,
