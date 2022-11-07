@@ -17,36 +17,8 @@ export default function Favourite() {
   const [showAlreadyExist, setAlreadyExist] = useState(false);
   const [showRemoveProduct, setRemoveProduct] = useState(false);
 
-  // id product
-  const productItems = dataFavouriteItem?.favourites?.map((item) => item.addToFavourite.id) || [];
-
-  // if product already in cart
-  const cartItems = dataCartItem?.cart?.map((item) => item.product_id);
-  const isInCart = cartItems?.some((item) => item === productItems[0]);
-
-  // add to cart
-  const handleAddToCart = () => {
-    dataFavouriteItem?.favourites?.map(
-      (item) =>
-        addToCart({
-          variables: {
-            size: item.size,
-            id: item.addToFavourite.id,
-            name: item.addToFavourite.name,
-            title: item.addToFavourite.title,
-            price: item.addToFavourite.price,
-            type: item.addToFavourite.type,
-            gender: item.addToFavourite.gender,
-            image1: item.addToFavourite.image1,
-            image2: item.addToFavourite.image2,
-            image3: item.addToFavourite.image3,
-            image4: item.addToFavourite.image4,
-            description: item.addToFavourite.description,
-          },
-        }),
-      setShowAddCart(true)
-    );
-  };
+  // initial product_id in the cart
+  const productInCart = dataCartItem?.cart?.map((item) => item);
 
   return (
     <section>
@@ -99,7 +71,26 @@ export default function Favourite() {
                     variant="dark"
                     className="w-100"
                     onClick={() => {
-                      isInCart ? setAlreadyExist(true) : handleAddToCart();
+                      productInCart?.some(
+                        (element) => element.product_id === item.addToFavourite.id && element.size === item.size
+                      )
+                        ? setAlreadyExist()
+                        : addToCart({
+                            variables: {
+                              size: item.size,
+                              id: item.addToFavourite.id,
+                              name: item.addToFavourite.name,
+                              title: item.addToFavourite.title,
+                              price: item.addToFavourite.price,
+                              type: item.addToFavourite.type,
+                              gender: item.addToFavourite.gender,
+                              image1: item.addToFavourite.image1,
+                              image2: item.addToFavourite.image2,
+                              image3: item.addToFavourite.image3,
+                              image4: item.addToFavourite.image4,
+                              description: item.addToFavourite.description,
+                            },
+                          }) && setShowAddCart(true);
                     }}
                   >
                     Add to bag

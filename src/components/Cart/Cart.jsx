@@ -26,9 +26,7 @@ export default function Cart() {
 
   // calculate total price
   const prices = [];
-
   dataCartItem?.cart?.map((item) => prices.push(item.addToCart.price));
-
   const total = prices?.reduce((prevPrice, currPrice) => prevPrice + currPrice, 0);
 
   // checkout
@@ -39,34 +37,8 @@ export default function Cart() {
     navigate("/checkout", { state: { dataCartItem, loadingCartItem, errorCartItem, total } });
   };
 
-  // if product already in favourite
-  const favouriteItems = dataFavouriteItem?.favourites?.map((item) => item.product_id);
-  const productItems = dataCartItem?.cart?.map((item) => item.addToCart.id) || [];
-
-  const isInFav = favouriteItems?.some((item) => item === productItems[0]);
-
-  // add to favourite
-  const handleAddToFav = () => {
-    dataCartItem?.cart?.map(
-      (item) =>
-        addToFavourite({
-          variables: {
-            id: item.addToCart.id,
-            name: item.addToCart.name,
-            title: item.addToCart.title,
-            price: item.addToCart.price,
-            type: item.addToCart.type,
-            gender: item.addToCart.gender,
-            image1: item.addToCart.image1,
-            image2: item.addToCart.image2,
-            image3: item.addToCart.image3,
-            image4: item.addToCart.image4,
-            description: item.addToCart.description,
-          },
-        }),
-      setShowAddFav(true)
-    );
-  };
+  // initial product_id & size item in the favourites
+  const productInFav = dataFavouriteItem?.favourites?.map((item) => item);
 
   return (
     <section>
@@ -102,7 +74,26 @@ export default function Cart() {
                           variant="light"
                           className="btn-icon rounded-circle me-3"
                           onClick={() => {
-                            isInFav ? setAlreadyExist(true) : handleAddToFav();
+                            productInFav?.some(
+                              (element) => element.product_id === item.product_id && element.size === item.size
+                            )
+                              ? setAlreadyExist(true)
+                              : addToFavourite({
+                                  variables: {
+                                    size: item.size,
+                                    id: item.addToCart.id,
+                                    name: item.addToCart.name,
+                                    title: item.addToCart.title,
+                                    price: item.addToCart.price,
+                                    type: item.addToCart.type,
+                                    gender: item.addToCart.gender,
+                                    image1: item.addToCart.image1,
+                                    image2: item.addToCart.image2,
+                                    image3: item.addToCart.image3,
+                                    image4: item.addToCart.image4,
+                                    description: item.addToCart.description,
+                                  },
+                                }) && setShowAddFav(true);
                           }}
                         >
                           <AiOutlineHeart size="25px" />

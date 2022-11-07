@@ -27,16 +27,11 @@ export default function Detail() {
   // conditional disable button
   const disabled = pickSize === "";
 
-  // id product
-  const productItems = dataProductById?.product?.map((item) => item.id) || [];
+  // initial product_id & size item in the cart
+  const productInCart = dataCartItem?.cart?.map((item) => item);
 
-  // if product already in cart
-  const cartItems = dataCartItem?.cart?.map((item) => item.product_id);
-  const isInCart = cartItems?.some((item) => item === productItems[0]);
-
-  // if product already in favourite
-  const favouriteItems = dataFavouriteItem?.favourites?.map((item) => item.product_id);
-  const isInFav = favouriteItems?.some((item) => item === productItems[0]);
+  // initial product_id & size item in the favourites
+  const productInFav = dataFavouriteItem?.favourites?.map((item) => item);
 
   // handle add to favourite
   const handleAddToFav = () => {
@@ -130,7 +125,9 @@ export default function Detail() {
                   <Button
                     variant="dark"
                     onClick={() => {
-                      isInCart ? setAlreadyExist(true) : handleAddToCart();
+                      productInCart?.some((element) => element.product_id === item.id && element.size === pickSize)
+                        ? setAlreadyExist(true)
+                        : handleAddToCart();
                     }}
                     disabled={disabled}
                   >
@@ -139,7 +136,9 @@ export default function Detail() {
                   <Button
                     variant="outline-dark"
                     onClick={() => {
-                      isInFav ? setAlreadyExist(true) : handleAddToFav();
+                      productInFav?.some((element) => element.product_id === item.id && element.size === pickSize)
+                        ? setAlreadyExist(true)
+                        : handleAddToFav();
                     }}
                     disabled={disabled}
                   >
