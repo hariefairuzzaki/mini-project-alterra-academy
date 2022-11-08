@@ -5,7 +5,7 @@ export default function useGetProductByWomen() {
     data: dataProductByWomen,
     loading: loadingProductByWomen,
     error: errorProductByWomen,
-  } = useQuery(GetProductByWomen, { fetchPolicy: "network-only" });
+  } = useQuery(GetProductByWomen);
 
   return {
     dataProductByWomen,

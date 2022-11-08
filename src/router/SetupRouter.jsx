@@ -41,7 +41,7 @@ const SetupRouter = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/profile">
-            <Route path="" element={<ProfilePage />} />
+            <Route index element={<ProfilePage />} />
             <Route path="order" element={<OrdersPage />} />
             <Route path="order/:id" element={<DetailOrderPage />} />
           </Route>

@@ -22,26 +22,26 @@ export default function DetailOrder() {
               <Col lg={8} md={8}>
                 <Row className="gy-4">
                   <Col lg={6}>
-                    <img src={item.order.image1} alt="Product" className="img-fluid" />
+                    <img src={item.image1} alt="Product" className="img-fluid" />
                   </Col>
                   <Col lg={6}>
-                    <img src={item.order.image2} alt="Product" className="img-fluid" />
+                    <img src={item.image2} alt="Product" className="img-fluid" />
                   </Col>
                   <Col lg={6}>
-                    <img src={item.order.image3} alt="Product" className="img-fluid" />
+                    <img src={item.image3} alt="Product" className="img-fluid" />
                   </Col>
                   <Col lg={6}>
-                    <img src={item.order.image4} alt="Product" className="img-fluid" />
+                    <img src={item.image4} alt="Product" className="img-fluid" />
                   </Col>
                 </Row>
               </Col>
               <Col lg={4} md={4}>
-                <h4>{item.order.name}</h4>
-                <p className="m-0 text-black-50">{item.order.title}</p>
-                <p className="m-0 text-black-50">Price {formatRupiah(item.order.price)}</p>
+                <h4>{item.name}</h4>
+                <p className="m-0 text-black-50">{item.title}</p>
+                <p className="m-0 text-black-50">Price {formatRupiah(item.price)}</p>
                 <div className="d-flex gap-3">
-                  <p className="m-0 text-black-50">Size {item.cart.size}</p>
-                  <p className="m-0 text-black-50">QTY {item.cart.quantity}</p>
+                  <p className="m-0 text-black-50">Size {item.size}</p>
+                  <p className="m-0 text-black-50">QTY {item.quantity}</p>
                 </div>
 
                 <hr />

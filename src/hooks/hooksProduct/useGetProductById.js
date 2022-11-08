@@ -8,7 +8,7 @@ export default function useGetProductById() {
     data: dataProductById,
     loading: loadingProductById,
     error: errorProductById,
-  } = useQuery(GetProductById, { variables: { id }, fetchPolicy: "network-only" });
+  } = useQuery(GetProductById, { variables: { id } });
 
   return {
     dataProductById,

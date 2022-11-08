@@ -5,7 +5,6 @@ import { CartItem } from "../../graphql/queries";
 export default function useAddToCart() {
   const [addToCart, { loading: loadingAddToCart }] = useMutation(AddToCart, {
     refetchQueries: [CartItem],
-    fetchPolicy: "network-only",
   });
   return {
     addToCart,

@@ -139,7 +139,6 @@ export const Checkout = gql`
     $detail_address: String
     $total_price: bigint
     $pay_method: String
-    $id: Int
     $name: String
     $title: String
     $price: Int
@@ -149,8 +148,6 @@ export const Checkout = gql`
     $image2: String
     $image3: String
     $image4: String
-    $description: String
-    $product_id: Int
     $size: String
     $quantity: Int
     $id_cart: Int
@@ -164,26 +161,17 @@ export const Checkout = gql`
         detail_address: $detail_address
         total_price: $total_price
         pay_method: $pay_method
-        order: {
-          data: {
-            id: $id
-            name: $name
-            title: $title
-            price: $price
-            type: $type
-            gender: $gender
-            image1: $image1
-            image2: $image2
-            image3: $image3
-            image4: $image4
-            description: $description
-          }
-          on_conflict: { constraint: product_pkey, update_columns: id }
-        }
-        cart: {
-          data: { product_id: $product_id, size: $size, quantity: $quantity }
-          on_conflict: { constraint: cart_pkey, update_columns: id }
-        }
+        name: $name
+        title: $title
+        price: $price
+        type: $type
+        gender: $gender
+        image1: $image1
+        image2: $image2
+        image3: $image3
+        image4: $image4
+        size: $size
+        quantity: $quantity
       }
     ) {
       affected_rows
@@ -194,26 +182,20 @@ export const Checkout = gql`
         phone_number
         address
         detail_address
-        product_id
         total_price
         pay_method
-        order {
-          id
-          name
-          title
-          price
-          type
-          gender
-          image1
-          image2
-          image3
-          image4
-          description
-        }
-        cart {
-          size
-          quantity
-        }
+        name
+        title
+        price
+        type
+        gender
+        image1
+        image2
+        image3
+        image4
+        size
+        quantity
+        created_at
       }
     }
     delete_cart(where: { id: { _eq: $id_cart } }) {

@@ -6,7 +6,7 @@ export default function useGetProductByShoes() {
     data: dataProductByShoes,
     loading: loadingProductByShoes,
     error: errorProductByShoes,
-  } = useQuery(GetProductByShoes, { fetchPolicy: "network-only" });
+  } = useQuery(GetProductByShoes);
 
   return {
     dataProductByShoes,

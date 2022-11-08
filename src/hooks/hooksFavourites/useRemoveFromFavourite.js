@@ -5,7 +5,6 @@ import { FavouriteItem } from "../../graphql/queries";
 export default function useRemoveFromFavourite() {
   const [removeFromFavourite, { loading: loadingRemoveFromFavourite }] = useMutation(RemoveFromFavourite, {
     refetchQueries: [FavouriteItem],
-    fetchPolicy: "network-only",
   });
   return {
     removeFromFavourite,
