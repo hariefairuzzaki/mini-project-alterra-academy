@@ -9,7 +9,7 @@ export default function useGetOrderById() {
     data: dataOrderById,
     loading: loadingOrderById,
     error: errorOrderById,
-  } = useQuery(GetOrderById, { variables: { id }, fetchPolicy: "network-only" });
+  } = useQuery(GetOrderById, { variables: { id } });
 
   return {
     dataOrderById,

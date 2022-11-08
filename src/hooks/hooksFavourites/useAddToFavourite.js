@@ -5,7 +5,6 @@ import { FavouriteItem } from "../../graphql/queries";
 export default function useAddToFavourite() {
   const [addToFavourite, { loading: loadingAddToFavourite }] = useMutation(AddToFavourite, {
     refetchQueries: [FavouriteItem],
-    fetchPolicy: "network-only",
   });
   return {
     addToFavourite,

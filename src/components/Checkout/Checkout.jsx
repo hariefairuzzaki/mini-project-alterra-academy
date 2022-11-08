@@ -39,8 +39,6 @@ export default function Checkout() {
       ...data,
       [name]: value,
     });
-
-    console.log(value);
   };
 
   const handleCheckout = () =>
@@ -55,7 +53,6 @@ export default function Checkout() {
           total_price: state.total,
           pay_method: data.pay_method,
 
-          id: item.addToCart.id,
           name: item.addToCart.name,
           title: item.addToCart.title,
           price: item.addToCart.price,
@@ -67,7 +64,6 @@ export default function Checkout() {
           image4: item.addToCart.image4,
           description: item.addToCart.description,
 
-          product_id: item.product_id,
           size: item.size,
           quantity: item.quantity,
 

@@ -193,30 +193,27 @@ export const FavouriteItem = gql`
 
 export const Orders = gql`
   query Orders {
-    orders {
+    orders(order_by: { created_at: asc }) {
       id
       first_name
       last_name
       phone_number
       address
       detail_address
-      product_id
-      total_price
       pay_method
+      name
+      title
+      type
+      gender
+      price
+      image1
+      image2
+      image3
+      image4
+      size
+      quantity
+      total_price
       created_at
-      order {
-        id
-        name
-        title
-        price
-        type
-        gender
-        image1
-        image2
-        image3
-        image4
-        description
-      }
     }
   }
 `;
@@ -230,22 +227,20 @@ export const GetOrderById = gql`
       phone_number
       address
       detail_address
-      total_price
       pay_method
+      name
+      title
+      type
+      gender
+      price
+      image1
+      image2
+      image3
+      image4
+      size
+      quantity
+      total_price
       created_at
-      cart {
-        size
-        quantity
-      }
-      order {
-        name
-        title
-        price
-        image1
-        image2
-        image3
-        image4
-      }
     }
   }
 `;
